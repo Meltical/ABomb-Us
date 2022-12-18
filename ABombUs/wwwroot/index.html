@@ -13,17 +13,14 @@
             integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
             crossorigin="anonymous"
         ></script>
-        <script src="./scripts.js" defer></script>
+        <script src="./render.js" defer></script>
+        <script src="./events.js" defer></script>
+        <script src="./signalr.js" defer></script>
         <title>ABomb Us</title>
     </head>
 
     <body oncontextmenu="return false;">
         <button id="new-game-button">New Game</button>
-        <canvas
-            id="canvas"
-            width="1200"
-            height="600"
-            onmouseout="clearMousePositions()"
-        ></canvas>
+        <canvas id="canvas" width="1200" height="600"></canvas>
     </body>
 </html>
