@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ABombUs
 {
@@ -83,48 +84,63 @@ namespace ABombUs
 		}
 		public static ClickResult Click(int column, int row)
         {
-			if (!board[column, row].Visible)
+			if (!board[column, row].Flagged)
 			{
-				if (board[column, row].Value == Mine)
-				{
+				if(!board[column, row].Visible)
+                {
+					if (board[column, row].Value == Mine)
+					{
+						for (int c = 0; c < Width; c++)
+						{
+							for (int r = 0; r < Height; r++)
+							{
+								board[c, r].Visible = true;
+							}
+						}
+						return ClickResult.GameOver;
+					}
+					else if (board[column, row].Value == 0)
+					{
+						Reveal(column, row);
+					}
+					else
+					{
+						board[column, row].Visible = true;
+					}
+
+					int visibleCount = 0;
 					for (int c = 0; c < Width; c++)
 					{
 						for (int r = 0; r < Height; r++)
 						{
-							board[c, r].Visible = true;
+							if (board[c, r].Visible)
+							{
+								visibleCount++;
+							}
 						}
 					}
-					return ClickResult.GameOver;
-				}
-				else if (board[column, row].Value == 0)
-				{
-					Reveal(column, row);
-				}
-				else
-				{
-					board[column, row].Visible = true;
-				}
 
-				int visibleCount = 0;
-				for (int c = 0; c < Width; c++)
-				{
-					for (int r = 0; r < Height; r++)
+					if (visibleCount == Width * Height - MineCount)
 					{
-						if (board[c, r].Visible)
+						return ClickResult.GameWon;
+					}
+				}
+                else
+                {
+					var adjacentTiles = AdjacentTiles(column, row);
+					if(adjacentTiles.Count(x => board[x.Column, x.Row].Flagged) == board[column, row].Value)
+                    {
+						foreach (var (r, c) in adjacentTiles)
 						{
-							visibleCount++;
+							if (!board[c, r].Flagged && !board[c, r].Visible)
+							{
+								Click(c, r);
+							}
 						}
 					}
 				}
-
-				if (visibleCount == Width * Height - MineCount)
-				{
-					return ClickResult.GameWon;
-				}
-
 				return ClickResult.Update;
 			}
-
 			return ClickResult.Ignore;
 		}
 		public enum FlagResult
