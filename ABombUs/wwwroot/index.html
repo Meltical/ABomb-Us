@@ -1,31 +1,29 @@
 ﻿<!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <script type="text/javascript" src="lib/signalr.min.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.2.1.js"
+            integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+            integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+            crossorigin="anonymous"
+        ></script>
+        <script src="./scripts.js" defer></script>
+        <title>ABomb Us</title>
+    </head>
 
-<head>
-    <meta charset="utf-8" />
-    <script type="text/javascript" src="lib/signalr.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-    <title>ABomb Us</title>
-</head>
-
-<body>
-    <button id="test">test</button>
-    <script>
-        var connection = new signalR.HubConnectionBuilder()
-            .withUrl('/gamehub')
-            .build();
-        connection.start();
-
-        document.getElementById("ouais").addEventListener('click', () => {
-            connection.invoke('click', 1, 1);
-        });
-
-        connection.on('update', function (data) {
-            console.log(JSON.parse(data));
-        });
-
-    </script>
-</body>
-
+    <body>
+        <button id="test">test</button>
+        <canvas
+            id="canvas"
+            width="1200"
+            height="600"
+            onmouseout="clearMousePositions()"
+        ></canvas>
+    </body>
 </html>
