@@ -12,33 +12,33 @@ namespace ABombUs
 		private const int Height = 15;
 		private const int MineCount = 99;
 		private static Random Random = new Random();
-		private static IEnumerable<(int Row, int Column)> AdjacentTiles(int column, int row)
+		private static IEnumerable<(int Column, int Row)> AdjacentTiles(int column, int row)
 		{
 			//    A B C
 			//    D + E
 			//    F G H
 
 			/* A */
-			if (row > 0 && column > 0) yield return (row - 1, column - 1);
+			if (row > 0 && column > 0) yield return (column - 1, row - 1);
 			/* B */
-			if (row > 0) yield return (row - 1, column);
+			if (row > 0) yield return (column, row - 1);
 			/* C */
-			if (row > 0 && column < Width - 1) yield return (row - 1, column + 1);
+			if (row > 0 && column < Width - 1) yield return (column + 1, row - 1);
 			/* D */
-			if (column > 0) yield return (row, column - 1);
+			if (column > 0) yield return (column - 1, row);
 			/* E */
-			if (column < Width - 1) yield return (row, column + 1);
+			if (column < Width - 1) yield return (column + 1, row);
 			/* F */
-			if (row < Height - 1 && column > 0) yield return (row + 1, column - 1);
+			if (row < Height - 1 && column > 0) yield return (column - 1, row + 1);
 			/* G */
-			if (row < Height - 1) yield return (row + 1, column);
+			if (row < Height - 1) yield return (column, row + 1);
 			/* H */
-			if (row < Height - 1 && column < Width - 1) yield return (row + 1, column + 1);
+			if (row < Height - 1 && column < Width - 1) yield return (column + 1, row + 1);
 		}
-		public static void GenerateBoard()
+		public static void GenerateBoard(int initialColumn, int initialRow)
 		{
 			board = new (int Value, bool Visible, bool Flagged)[Width, Height];
-			var coordinates = new List<(int Row, int Column)>();
+			var coordinates = new List<(int Column, int Row)>();
 			for (int column = 0; column < Width; column++)
 			{
 				for (int row = 0; row < Height; row++)
@@ -46,6 +46,9 @@ namespace ABombUs
 					coordinates.Add((column, row));
 				}
 			}
+			var initialTiles = AdjacentTiles(initialColumn, initialRow);
+			initialTiles = initialTiles.Append((initialColumn, initialRow));
+			coordinates.RemoveAll(x => initialTiles.Contains(x));
 			for (int i = 0; i < MineCount; i++)
 			{
 				int randomIndex = Random.Next(0, coordinates.Count);
@@ -66,7 +69,7 @@ namespace ABombUs
 			board[column, row].Visible = true;
 			if (board[column, row].Value == 0)
 			{
-				foreach (var (r, c) in AdjacentTiles(column, row))
+				foreach (var (c, r) in AdjacentTiles(column, row))
 				{
 					if (!board[c, r].Visible)
 					{
@@ -128,9 +131,9 @@ namespace ABombUs
                 else
                 {
 					var adjacentTiles = AdjacentTiles(column, row);
-					if(adjacentTiles.Count(x => board[x.Column, x.Row].Flagged) == board[column, row].Value)
+					if(adjacentTiles.Count(x => board[x.Column, x.Row].Flagged) >= board[column, row].Value)
                     {
-						foreach (var (r, c) in adjacentTiles)
+						foreach (var (c, r) in adjacentTiles)
 						{
 							if (!board[c, r].Flagged && !board[c, r].Visible)
 							{

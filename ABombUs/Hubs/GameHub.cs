@@ -6,10 +6,11 @@ namespace ABombUs.Hubs
 {
     public class GameHub : Hub
     {
-        public Task NewGame()
+        public Task NewGame(int c, int r)
         {
-            Game.GenerateBoard();
-            return BroadcastBoard(BoardState.Playing);
+            Game.GenerateBoard(c, r);
+            Click(c, r);
+            return Task.CompletedTask;
         }
 
         public Task Click(int c, int r)

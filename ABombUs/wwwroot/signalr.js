@@ -1,9 +1,10 @@
 let connection = new signalR.HubConnectionBuilder().withUrl('/gamehub').build()
 connection.start()
 
+playing = false
 document.getElementById('new-game-button').addEventListener('click', () => {
     clearBoard()
-    connection.invoke('NewGame')
+    playing = false
 })
 
 connection.on('updateBoard', function (response) {
