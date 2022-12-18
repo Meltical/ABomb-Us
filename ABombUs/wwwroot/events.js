@@ -13,7 +13,7 @@ $(document).ready(function () {
             }
             connection.invoke('Click', x, y)
         } else {
-            connection.invoke('NewGame', x, y)
+            connection.invoke('StartGame', x, y)
             audio.loop = true
             audio.volume = 0.5
             audio.play()
@@ -29,5 +29,10 @@ $(document).ready(function () {
             return
         }
         connection.invoke('Flag', x, y)
+    })
+
+    //create canvas on mouse move and invoke
+    $(canvas).on('mousemove', function (e) {
+        connection.invoke('MouseMove', e.clientX, e.clientY)
     })
 })

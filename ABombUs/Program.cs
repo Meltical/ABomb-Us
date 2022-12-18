@@ -7,6 +7,7 @@ namespace ABombUs
     {
         public static void Main(string[] args)
         {
+            Game.SetEmptyBoard();
             CreateHostBuilder(args).Build().Run();
         }
 

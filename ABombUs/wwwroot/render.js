@@ -13,20 +13,6 @@ let canvasy = $(canvas).offset().top
 const drawSprite = (dx, dy, i, j) =>
     ctx.drawImage(spriteimage, dx, dy, 16, 16, i * 40, j * 40, 40, 40)
 
-function drawBoard() {
-    for (let i = 0; i < width; i++) {
-        for (let j = 0; j < height; j++) {
-            drawSprite(0, 0, i, j)
-        }
-    }
-}
-drawBoard()
-
-const clearBoard = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    drawBoard()
-}
-
 const updateBoard = (explodedMines, wrongMines) => {
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
@@ -72,9 +58,6 @@ const updateBoard = (explodedMines, wrongMines) => {
         }
     }
     if (explodedMines.length > 0) {
-        let audio = new Audio('./vine-boom.mp3')
-        audio.volume = 1
-        audio.play()
         explodedMines.forEach((mine) => {
             drawSprite(96, 0, mine.Item1, mine.Item2)
         })

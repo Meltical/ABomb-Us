@@ -6,12 +6,14 @@ namespace ABombUs
 {
     public static class Game
     {
-        public static (int Value, bool Visible, bool Flagged)[,] board;
+        public static BoardState State;
+        public static (int Value, bool Visible, bool Flagged)[,] Board;
         private const int Mine = -1;
         private const int Width = 30;
         private const int Height = 15;
         private const int MineCount = 99;
         private static Random Random = new Random();
+        
         private static IEnumerable<(int Column, int Row)> AdjacentTiles(int column, int row)
         {
             //    A B C
@@ -35,9 +37,16 @@ namespace ABombUs
             /* H */
             if (row < Height - 1 && column < Width - 1) yield return (column + 1, row + 1);
         }
+
+        public static void SetEmptyBoard()
+        {
+            Board = new (int Value, bool Visible, bool Flagged)[Width, Height];
+            State = BoardState.Playing;
+        }
+
         public static void GenerateBoard(int initialColumn, int initialRow)
         {
-            board = new (int Value, bool Visible, bool Flagged)[Width, Height];
+            Board = new (int Value, bool Visible, bool Flagged)[Width, Height];
             var coordinates = new List<(int Column, int Row)>();
             for (int column = 0; column < Width; column++)
             {
@@ -54,137 +63,150 @@ namespace ABombUs
                 int randomIndex = Random.Next(0, coordinates.Count);
                 (int column, int row) = coordinates[randomIndex];
                 coordinates.RemoveAt(randomIndex);
-                board[column, row] = (Mine, false, false);
+                Board[column, row] = (Mine, false, false);
                 foreach (var tile in AdjacentTiles(column, row))
                 {
-                    if (board[tile.Column, tile.Row].Value != Mine)
+                    if (Board[tile.Column, tile.Row].Value != Mine)
                     {
-                        board[tile.Column, tile.Row].Value++;
+                        Board[tile.Column, tile.Row].Value++;
                     }
                 }
             }
         }
+        
         private static void Reveal(int column, int row)
         {
-            board[column, row].Visible = true;
-            if (board[column, row].Value == 0)
+            Board[column, row].Visible = true;
+            if (Board[column, row].Value == 0)
             {
                 foreach (var (c, r) in AdjacentTiles(column, row))
                 {
-                    if (!board[c, r].Visible)
+                    if (!Board[c, r].Visible)
                     {
                         Reveal(c, r);
                     }
                 }
             }
         }
-        public enum ClickResult
+        
+        public static (List<(int x, int y)> ExplodedMines, List<(int x, int y)> WrongMines) Click(int column, int row)
         {
-            GameOver,
-            Update,
-            GameWon,
-            Ignore
-        }
-        public static (ClickResult State, List<(int x, int y)> ExplodedMines, List<(int x, int y)> WrongMines) Click(int column, int row)
-        {
-            if (!board[column, row].Flagged)
+            if (!Board[column, row].Flagged)
             {
-                if (!board[column, row].Visible)
+                if (!Board[column, row].Visible)
                 {
-                    if (board[column, row].Value == Mine)
-                    {
-                        for (int c = 0; c < Width; c++)
-                        {
-                            for (int r = 0; r < Height; r++)
-                            {
-                                if (board[c, r].Value == Mine)
-                                {
-                                    board[c, r].Visible = true;
-                                }
-                            }
-                        }
-                        return (ClickResult.GameOver, new List<(int x, int y)>() { (column, row) }, null);
-                    }
-                    else if (board[column, row].Value == 0)
-                    {
-                        Reveal(column, row);
-                    }
-                    else
-                    {
-                        board[column, row].Visible = true;
-                    }
-
-                    int visibleCount = 0;
-                    for (int c = 0; c < Width; c++)
-                    {
-                        for (int r = 0; r < Height; r++)
-                        {
-                            if (board[c, r].Visible)
-                            {
-                                visibleCount++;
-                            }
-                        }
-                    }
-
-                    if (visibleCount == Width * Height - MineCount)
-                    {
-                        return (ClickResult.GameWon, null, null);
-                    }
+                    return HandleClick(column, row);
                 }
                 else
                 {
-                    var adjacentTiles = AdjacentTiles(column, row);
-                    if (adjacentTiles.Count(x => board[x.Column, x.Row].Flagged) >= board[column, row].Value)
+                    //TODO: Use SignalState to Ignore useless Chord replies
+                    return HandleChord(column, row);
+                }
+            }
+
+            return (null, null);
+        }
+
+        private static (List<(int x, int y)> ExplodedMines, List<(int x, int y)> WrongMines) HandleChord(int column, int row)
+        {
+            var adjacentTiles = AdjacentTiles(column, row);
+            if (adjacentTiles.Count(x => Board[x.Column, x.Row].Flagged) >= Board[column, row].Value)
+            {
+                foreach (var (c, r) in adjacentTiles)
+                {
+                    if (!Board[c, r].Flagged && !Board[c, r].Visible)
                     {
-                        foreach (var (c, r) in adjacentTiles)
+                        var clickResponse = Click(c, r);
+                        if (State == BoardState.Lost)
                         {
-                            if (!board[c, r].Flagged && !board[c, r].Visible)
+                            var explodedMines = new List<(int x, int y)>();
+                            var wrongMines = new List<(int x, int y)>();
+                            foreach (var (x, y) in adjacentTiles)
                             {
-                                var clickResponse = Click(c, r);
-                                if (clickResponse.State == ClickResult.GameOver)
+                                var cell = Board[x, y];
+                                if (cell.Value == Mine && !cell.Flagged)
                                 {
-                                    var explodedMines = new List<(int x, int y)>();
-                                    var wrongMines = new List<(int x, int y)>();
-                                    foreach (var (x, y) in adjacentTiles)
-                                    {
-                                        var cell = board[x, y];
-                                        if (cell.Value == Mine && !cell.Flagged)
-                                        {
-                                            explodedMines.Add((x, y));
-                                        }
-                                        else if (cell.Value != Mine && cell.Flagged)
-                                        {
-                                            wrongMines.Add((x, y));
-                                        }
-                                        else
-                                        {
-                                            board[x, y].Visible = true;
-                                        }
-                                    }
-                                    return (ClickResult.GameOver, explodedMines, wrongMines);
+                                    explodedMines.Add((x, y));
+                                }
+                                else if (cell.Value != Mine && cell.Flagged)
+                                {
+                                    wrongMines.Add((x, y));
+                                }
+                                else
+                                {
+                                    Board[x, y].Visible = true;
                                 }
                             }
+                            return (explodedMines, wrongMines);
                         }
                     }
                 }
-                return (ClickResult.Update, null, null);
             }
-            return (ClickResult.Ignore, null, null);
+
+            return (null, null);
         }
-        public enum FlagResult
+
+        private static (List<(int x, int y)> ExplodedMines, List<(int x, int y)> WrongMines) HandleClick(int column, int row)
+        {
+            if (Board[column, row].Value == Mine)
+            {
+                for (int c = 0; c < Width; c++)
+                {
+                    for (int r = 0; r < Height; r++)
+                    {
+                        if (Board[c, r].Value == Mine)
+                        {
+                            Board[c, r].Visible = true;
+                        }
+                    }
+                }
+                State = BoardState.Lost;
+                return (new List<(int x, int y)>() { (column, row) }, null);
+            }
+            else if (Board[column, row].Value == 0)
+            {
+                Reveal(column, row);
+            }
+            else
+            {
+                Board[column, row].Visible = true;
+            }
+
+            int visibleCount = 0;
+            for (int c = 0; c < Width; c++)
+            {
+                for (int r = 0; r < Height; r++)
+                {
+                    if (Board[c, r].Visible)
+                    {
+                        visibleCount++;
+                    }
+                }
+            }
+
+            if (visibleCount == Width * Height - MineCount)
+            {
+                State = BoardState.Won;
+            }
+
+            return (null, null);
+        }
+
+        public static SignalState Flag(int column, int row)
+        {
+            if (!Board[column, row].Visible)
+            {
+                Board[column, row].Flagged = !Board[column, row].Flagged;
+                return SignalState.Update;
+            }
+
+            return SignalState.Ignore;
+        }
+
+        public enum SignalState
         {
             Update,
             Ignore
-        }
-        public static FlagResult Flag(int column, int row)
-        {
-            if (!board[column, row].Visible)
-            {
-                board[column, row].Flagged = !board[column, row].Flagged;
-                return FlagResult.Update;
-            }
-
-            return FlagResult.Ignore;
         }
     }
 }

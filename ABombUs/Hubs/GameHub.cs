@@ -5,9 +5,25 @@ using System.Threading.Tasks;
 
 namespace ABombUs.Hubs
 {
-    public class GameHub : Hub
+    public class GameHub : Hub 
     {
-        public Task NewGame(int c, int r)
+        public Task MouseMove(int x, int y)
+        {
+            return Clients.Others.SendAsync("mouseMove", Context.ConnectionId, x, y);
+        }
+
+        public Task GetBoard()
+        {
+            return RespondBoard();
+        }
+
+        public Task NewGame()
+        {
+            Game.SetEmptyBoard();
+            return BroadcastBoard();
+        }
+
+        public Task StartGame(int c, int r)
         {
             Game.GenerateBoard(c, r);
             return Click(c, r);
@@ -15,37 +31,48 @@ namespace ABombUs.Hubs
 
         public Task Click(int c, int r)
         {
-            var click = Game.Click(c, r);
-            switch (click.State)
+            if(Game.State != BoardState.Playing)
             {
-                case Game.ClickResult.Update:
-                    return BroadcastBoard(BoardState.Playing);
-                case Game.ClickResult.GameWon:
-                    return BroadcastBoard(BoardState.Won);
-                case Game.ClickResult.GameOver:
-                    return BroadcastBoard(BoardState.Lost, click.ExplodedMines, click.WrongMines);
-                case Game.ClickResult.Ignore:
-                default: return Task.CompletedTask;
+                return Task.CompletedTask;
             }
+
+            var click = Game.Click(c, r);
+            return BroadcastBoard(click.ExplodedMines, click.WrongMines);
         }
 
         public Task Flag(int c, int r)
         {
+            if (Game.State != BoardState.Playing)
+            {
+                return Task.CompletedTask;
+            }
+
             switch (Game.Flag(c, r))
             {
-                case Game.FlagResult.Update:
-                    return BroadcastBoard(BoardState.Playing);
-                case Game.FlagResult.Ignore:
+                case Game.SignalState.Update:
+                    return BroadcastBoard();
+                case Game.SignalState.Ignore:
                 default: return Task.CompletedTask;
             }
         }
 
-        private Task BroadcastBoard(BoardState state, List<(int x, int y)> explodedMines = null, List<(int x, int y)> wrongMines = null) 
+        private Task BroadcastBoard(List<(int x, int y)> explodedMines = null, List<(int x, int y)> wrongMines = null) 
         {
             return Clients.All.SendAsync("updateBoard", JsonConvert.SerializeObject(new BoardDto
             {
-                Board = Game.board,
-                State = state,
+                Board = Game.Board,
+                State = Game.State,
+                ExplodedMines = explodedMines,
+                WrongMines = wrongMines,
+            }));
+        }
+
+        private Task RespondBoard(List<(int x, int y)> explodedMines = null, List<(int x, int y)> wrongMines = null)
+        {
+            return Clients.Caller.SendAsync("updateBoard", JsonConvert.SerializeObject(new BoardDto
+            {
+                Board = Game.Board,
+                State = Game.State,
                 ExplodedMines = explodedMines,
                 WrongMines = wrongMines,
             }));
