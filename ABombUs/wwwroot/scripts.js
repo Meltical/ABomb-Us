@@ -1,13 +1,16 @@
 var connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
 connection.start();
 
-document.getElementById("test").addEventListener("click", () => {
-    console.log("click");
-    connection.invoke("click", 2, 1);
+document.getElementById("new-game-button").addEventListener("click", () => {
+    clearBoard();
+    connection.invoke("NewGame");
+    //connection.invoke('Click', x, y);
+    //connection.invoke('Flag', x, y);
 });
-
-connection.on("update", function (data) {
-    console.log(JSON.parse(data));
+let board = [];
+connection.on("updateBoard", function (data) {
+    board = JSON.parse(data);
+    updateBoard();
 });
 
 const width = 30;
@@ -28,29 +31,169 @@ clearMousePositions = function () {
     last_mousey = 0;
 };
 
-// for (let i = 0; i < board.length; i++) {
-//     for (let j = 0; j < board[i].length; j++) {
-//         // console.log(i + " " + j + " ", board[i][j]);
-//         if (board[i][j].Item2) {
-//             ctx.font = "20px serif";
-//             switch (board[i][j].Item1) {
-//                 case -1:
-//                     ctx.fillText("BOOM", i * 40 + 10, j * 40 + 30);
-//                     break;
-//                 case 0:
-//                     ctx.fillText(" ", i * 40 + 10, j * 40 + 30);
-//                     break;
-//                 default:
-//                     ctx.fillText(board[i][j].Item1, i * 40 + 10, j * 40 + 30);
-//                     break;
-//             }
-//         } else if (board[i][j].Item3) {
-//             //display a flag
-//         } else {
-//             //display a blank square
-//         }
-//     }
-// }
+spriteimage = new Image();
+spriteimage.src = "./2000.png";
+
+const updateBoard = () => {
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+            if (board[i][j].Item2) {
+                ctx.font = "20px serif";
+                switch (board[i][j].Item1) {
+                    case -1:
+                        ctx.drawImage(
+                            spriteimage,
+                            80,
+                            0,
+                            16,
+                            16,
+                            i * 40,
+                            j * 40,
+                            40,
+                            40
+                        );
+                        break;
+                    case 0:
+                        ctx.drawImage(
+                            spriteimage,
+                            16,
+                            0,
+                            16,
+                            16,
+                            i * 40,
+                            j * 40,
+                            40,
+                            40
+                        );
+                        break;
+                    case 1:
+                        ctx.drawImage(
+                            spriteimage,
+                            0,
+                            16,
+                            16,
+                            16,
+                            i * 40,
+                            j * 40,
+                            40,
+                            40
+                        );
+                        break;
+                    case 2:
+                        ctx.drawImage(
+                            spriteimage,
+                            16,
+                            16,
+                            16,
+                            16,
+                            i * 40,
+                            j * 40,
+                            40,
+                            40
+                        );
+                        break;
+                    case 3:
+                        ctx.drawImage(
+                            spriteimage,
+                            32,
+                            16,
+                            16,
+                            16,
+                            i * 40,
+                            j * 40,
+                            40,
+                            40
+                        );
+                        break;
+                    case 4:
+                        ctx.drawImage(
+                            spriteimage,
+                            48,
+                            16,
+                            16,
+                            16,
+                            i * 40,
+                            j * 40,
+                            40,
+                            40
+                        );
+                        break;
+                    case 5:
+                        ctx.drawImage(
+                            spriteimage,
+                            64,
+                            16,
+                            16,
+                            16,
+                            i * 40,
+                            j * 40,
+                            40,
+                            40
+                        );
+                        break;
+                    case 6:
+                        ctx.drawImage(
+                            spriteimage,
+                            80,
+                            16,
+                            16,
+                            16,
+                            i * 40,
+                            j * 40,
+                            40,
+                            40
+                        );
+                        break;
+                    case 7:
+                        ctx.drawImage(
+                            spriteimage,
+                            96,
+                            16,
+                            16,
+                            16,
+                            i * 40,
+                            j * 40,
+                            40,
+                            40
+                        );
+                        break;
+                    case 8:
+                        ctx.drawImage(
+                            spriteimage,
+                            112,
+                            16,
+                            16,
+                            16,
+                            i * 40,
+                            j * 40,
+                            40,
+                            40
+                        );
+                        break;
+                }
+            } else if (board[i][j].Item3) {
+                ctx.drawImage(
+                    spriteimage,
+                    32,
+                    0,
+                    16,
+                    16,
+                    i * 40,
+                    j * 40,
+                    40,
+                    40
+                );
+            } else {
+                //display a blank square
+            }
+        }
+    }
+};
+
+const clearBoard = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBoard();
+};
 
 // Box width
 var bw = canvas.width;
@@ -59,26 +202,23 @@ var bh = canvas.height;
 p = 0;
 
 function drawBoard() {
-    for (var x = 0; x <= bw; x += bw / width) {
-        ctx.moveTo(0.5 + x + p, p);
-        ctx.lineTo(0.5 + x + p, bh + p);
+    for (let i = 0; i < width; i++) {
+        for (let j = 0; j < height; j++) {
+            ctx.drawImage(spriteimage, 0, 0, 16, 16, i * 40, j * 40, 40, 40);
+        }
     }
-
-    for (var x = 0; x <= bh; x += bh / height) {
-        ctx.moveTo(p, 0.5 + x + p);
-        ctx.lineTo(bw + p, 0.5 + x + p);
-    }
-    ctx.strokeStyle = "black";
-    ctx.stroke();
 }
 $(canvas).on("click", function (e) {
-    mousex = parseInt(e.clientX - canvasx);
-    mousey = parseInt(e.clientY - canvasy);
-    // console.log("X: " + mousex + " Y: " + mousey);
-    let x = Math.floor(mousex / 40);
-    let y = Math.floor(mousey / 40);
-    connection.invoke("click", x, y);
-    console.log("X: " + x + " Y: " + y);
-    // console.log(board[x][y]);
+    let x = Math.floor(parseInt(e.clientX - canvasx) / 40);
+    let y = Math.floor(parseInt(e.clientY - canvasy) / 40);
+    connection.invoke("Click", x, y);
 });
+
+$(canvas).on("contextmenu", function (e) {
+    console.log("right click");
+    let x = Math.floor(parseInt(e.clientX - canvasx) / 40);
+    let y = Math.floor(parseInt(e.clientY - canvasy) / 40);
+    connection.invoke("Flag", x, y);
+});
+
 drawBoard();
