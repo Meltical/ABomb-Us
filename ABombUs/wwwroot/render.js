@@ -27,7 +27,7 @@ const clearBoard = () => {
     drawBoard()
 }
 
-const updateBoard = () => {
+const updateBoard = (explodedMine) => {
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
             if (board[i][j].Item2) {
@@ -70,5 +70,11 @@ const updateBoard = () => {
                 drawSprite(0, 0, i, j)
             }
         }
+    }
+    if (explodedMine !== null) {
+        let audio = new Audio('./vine-boom.mp3')
+        audio.volume = 1
+        audio.play()
+        drawSprite(96, 0, explodedMine.Item1, explodedMine.Item2)
     }
 }
