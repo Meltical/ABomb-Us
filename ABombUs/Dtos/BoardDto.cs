@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -9,8 +10,11 @@ public class BoardDto
     [JsonProperty("state")]
     public BoardState State { get; set; }
 
-    [JsonProperty("exploded_mine")]
-    public (int x, int y)? ExplodedMine { get; set; }
+    [JsonProperty("exploded_mines")]
+    public List<(int x, int y)> ExplodedMines { get; set; }
+
+    [JsonProperty("wrong_mines")]
+    public List<(int x, int y)> WrongMines { get; set; }
 }
 
 [JsonConverter(typeof(StringEnumConverter))]

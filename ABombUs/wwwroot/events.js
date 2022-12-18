@@ -1,17 +1,22 @@
+let audio = new Audio('./AmogusTrap.mp3')
 $(document).ready(function () {
     //onmousedown use the sprite
 
     $(canvas).on('click', function (e) {
         let x = Math.floor(parseInt(e.clientX - canvasx) / 40)
         let y = Math.floor(parseInt(e.clientY - canvasy) / 40)
-        if (board[x][y].Item3 === true) {
-            return
-        }
-        if (playing) {
+
+        if (board.some((x) => x.some((y) => y.Item2))) {
+            //If Flagged
+            if (board[x][y].Item3) {
+                return
+            }
             connection.invoke('Click', x, y)
         } else {
             connection.invoke('NewGame', x, y)
-            playing = true
+            audio.loop = true
+            audio.volume = 0.5
+            audio.play()
         }
     })
 
@@ -19,10 +24,10 @@ $(document).ready(function () {
         let x = Math.floor(parseInt(e.clientX - canvasx) / 40)
         let y = Math.floor(parseInt(e.clientY - canvasy) / 40)
 
-        if (board[x][y].Item2 === true) {
+        //If Visible
+        if (board[x][y].Item2) {
             return
         }
-
         connection.invoke('Flag', x, y)
     })
 })

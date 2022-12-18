@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ABombUs.Hubs
@@ -9,28 +10,28 @@ namespace ABombUs.Hubs
         public Task NewGame(int c, int r)
         {
             Game.GenerateBoard(c, r);
-            Click(c, r);
-            return Task.CompletedTask;
+            return Click(c, r);
         }
 
         public Task Click(int c, int r)
         {
-            switch(Game.Click(c, r))
+            var click = Game.Click(c, r);
+            switch (click.State)
             {
                 case Game.ClickResult.Update:
                     return BroadcastBoard(BoardState.Playing);
                 case Game.ClickResult.GameWon:
                     return BroadcastBoard(BoardState.Won);
                 case Game.ClickResult.GameOver:
-                    return BroadcastBoard(BoardState.Lost, (c, r));
-                case Game.ClickResult.Ignore: 
+                    return BroadcastBoard(BoardState.Lost, click.ExplodedMines, click.WrongMines);
+                case Game.ClickResult.Ignore:
                 default: return Task.CompletedTask;
             }
         }
 
         public Task Flag(int c, int r)
         {
-            switch(Game.Flag(c, r))
+            switch (Game.Flag(c, r))
             {
                 case Game.FlagResult.Update:
                     return BroadcastBoard(BoardState.Playing);
@@ -39,11 +40,15 @@ namespace ABombUs.Hubs
             }
         }
 
-        private Task BroadcastBoard(BoardState state, (int x, int y)? explodedMine = null) => Clients.All.SendAsync("updateBoard", JsonConvert.SerializeObject(new BoardDto
+        private Task BroadcastBoard(BoardState state, List<(int x, int y)> explodedMines = null, List<(int x, int y)> wrongMines = null) 
         {
-            Board = Game.board,
-            State = state,
-            ExplodedMine = explodedMine
-        }));
+            return Clients.All.SendAsync("updateBoard", JsonConvert.SerializeObject(new BoardDto
+            {
+                Board = Game.board,
+                State = state,
+                ExplodedMines = explodedMines,
+                WrongMines = wrongMines,
+            }));
+        }
     }
 }

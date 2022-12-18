@@ -27,7 +27,7 @@ const clearBoard = () => {
     drawBoard()
 }
 
-const updateBoard = (explodedMine) => {
+const updateBoard = (explodedMines, wrongMines) => {
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
             if (board[i][j].Item2) {
@@ -71,10 +71,17 @@ const updateBoard = (explodedMine) => {
             }
         }
     }
-    if (explodedMine !== null) {
+    if (explodedMines.length > 0) {
         let audio = new Audio('./vine-boom.mp3')
         audio.volume = 1
         audio.play()
-        drawSprite(96, 0, explodedMine.Item1, explodedMine.Item2)
+        explodedMines.forEach((mine) => {
+            drawSprite(96, 0, mine.Item1, mine.Item2)
+        })
+        if (wrongMines.length > 0) {
+            wrongMines.forEach((mine) => {
+                drawSprite(112, 0, mine.Item1, mine.Item2)
+            })
+        }
     }
 }
