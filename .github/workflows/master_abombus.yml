@@ -26,7 +26,7 @@ jobs:
       #  vs-version: "[16.4,16.5]"  #Version of Visual Studio to search; defaults to latest if not specified
 
     - name: Run MSBuild
-      run: msbuild .\SampleWebApplication.sln
+      run: msbuild .\ABombUs.sln
        
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
