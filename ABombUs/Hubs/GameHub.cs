@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ABombUs.Hubs
@@ -10,7 +9,7 @@ namespace ABombUs.Hubs
         public Task NewGame()
         {
             Game.GenerateBoard();
-            return BroadcastBoard();
+            return BroadcastBoard(BoardState.Playing);
         }
 
         public Task Click(int c, int r)
@@ -18,11 +17,11 @@ namespace ABombUs.Hubs
             switch(Game.Click(c, r))
             {
                 case Game.ClickResult.Update:
-                    return BroadcastBoard();
+                    return BroadcastBoard(BoardState.Playing);
                 case Game.ClickResult.GameWon:
-                    return BroadcastGameWon();
+                    return BroadcastBoard(BoardState.Won);
                 case Game.ClickResult.GameOver:
-                    return BroadcastGameOver();
+                    return BroadcastBoard(BoardState.Lost, (c, r));
                 case Game.ClickResult.Ignore: 
                 default: return Task.CompletedTask;
             }
@@ -33,14 +32,17 @@ namespace ABombUs.Hubs
             switch(Game.Flag(c, r))
             {
                 case Game.FlagResult.Update:
-                    return BroadcastBoard();
+                    return BroadcastBoard(BoardState.Playing);
                 case Game.FlagResult.Ignore:
                 default: return Task.CompletedTask;
             }
         }
 
-        private Task BroadcastBoard() => Clients.All.SendAsync("update", JsonConvert.SerializeObject(Game.board));
-        private Task BroadcastGameOver() => Clients.All.SendAsync("gameover", JsonConvert.SerializeObject(Game.board));
-        private Task BroadcastGameWon() => Clients.All.SendAsync("gamewon", JsonConvert.SerializeObject(Game.board));
+        private Task BroadcastBoard(BoardState state, (int x, int y)? explodedMine = null) => Clients.All.SendAsync("updateBoard", JsonConvert.SerializeObject(new BoardDto
+        {
+            Board = Game.board,
+            State = state,
+            ExplodedMine = explodedMine
+        }));
     }
 }
