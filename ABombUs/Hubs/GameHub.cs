@@ -10,7 +10,7 @@ namespace ABombUs.Hubs
         public Task NewGame()
         {
             Game.GenerateBoard();
-            return BroadcastGameOver();
+            return BroadcastBoard();
         }
 
         public Task Click(int c, int r)

@@ -10,18 +10,28 @@
 </head>
 
 <body>
-    <button id="test">test</button>
+    <button id="new-game-button">New Game</button>
     <script>
         var connection = new signalR.HubConnectionBuilder()
             .withUrl('/gamehub')
             .build();
         connection.start();
 
-        document.getElementById("ouais").addEventListener('click', () => {
-            connection.invoke('click', 1, 1);
+        document.getElementById("new-game-button").addEventListener('click', () => {
+            connection.invoke('NewGame');
+            //connection.invoke('Click', x, y);
+            //connection.invoke('Flag', x, y);
         });
 
         connection.on('update', function (data) {
+            console.log(JSON.parse(data));
+        });
+
+        connection.on('gameover', function (data) {
+            console.log(JSON.parse(data));
+        });
+
+        connection.on('gamewon', function (data) {
             console.log(JSON.parse(data));
         });
 
