@@ -20,8 +20,22 @@
     </head>
 
     <body>
-        <canvas oncontextmenu="return false;" id="canvas"></canvas>
-        <button onauxclick="mute()" id="new-game-button">New Game</button>
+        <div style="display: flex; flex-direction: row">
+            <canvas oncontextmenu="return false;" id="canvas"></canvas>
+            <div id="menu" style="display: flex; flex-direction: column">
+                <div id="bombs">99</div>
+                <button onauxclick="mute()" id="new-game-button">
+                    New Game
+                </button>
+            </div>
+        </div>
+        <div id="overlay">
+            <div id="overlay-content">
+                <h1 id="overlay-title">Game Over</h1>
+                <p id="overlay-text">You lost!</p>
+                <button id="overlay-button">New Game</button>
+            </div>
+        </div>
     </body>
 </html>
 <style>
@@ -32,7 +46,47 @@
         width: 100%;
         height: 100%;
     }
+    #menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 200px;
+        height: 100%;
+    }
     canvas {
         max-width: 1244px;
+    }
+    #bombs {
+        font-size: 7em;
+        margin: 0;
+    }
+    #overlay-content {
+        margin: 15%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #overlay-text {
+        font-size: 4em;
+        margin: 0;
+    }
+    #overlay-title {
+        font-size: 6em;
+        margin: 0;
+    }
+    #overlay {
+        color: white;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 3;
+        display: none;
+        justify-content: center;
     }
 </style>

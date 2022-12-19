@@ -42,7 +42,7 @@ const clearBoard = () => {
     drawBoard()
 }
 
-const updateBoard = (explodedMine) => {
+const updateBoard = (explodedMine, wrongMines) => {
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
             if (board[i][j].Item2) {
@@ -89,6 +89,11 @@ const updateBoard = (explodedMine) => {
     if (explodedMine.length > 0) {
         for (let i = 0; i < explodedMine.length; i++) {
             drawSprite(96, 0, explodedMine[i].Item1, explodedMine[i].Item2)
+        }
+    }
+    if (wrongMines.length > 0) {
+        for (let i = 0; i < wrongMines.length; i++) {
+            drawSprite(112, 0, wrongMines[i].Item1, wrongMines[i].Item2)
         }
     }
 }

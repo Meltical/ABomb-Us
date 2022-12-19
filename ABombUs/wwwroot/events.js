@@ -1,14 +1,17 @@
 let audio = new Audio('./AmogusTrap.mp3')
 $(document).ready(function () {
     //onmousedown use the sprite
-
-    $(canvas).on('click', function (e) {
+    const getCoords = (e) => {
         let x = Math.floor(
             parseInt(e.clientX - canvasx) / (canvas.width / width)
         )
         let y = Math.floor(
             parseInt(e.clientY - canvasy) / (canvas.height / height)
         )
+        return [x, y]
+    }
+    $(canvas).on('click', function (e) {
+        let [x, y] = getCoords(e)
 
         if (board.some((x) => x.some((y) => y.Item2))) {
             //If Flagged
@@ -23,19 +26,19 @@ $(document).ready(function () {
             audio.play()
         }
     })
-
+    let flagCounter = 0
     $(canvas).on('contextmenu', function (e) {
-        let x = Math.floor(
-            parseInt(e.clientX - canvasx) / (canvas.width / width)
-        )
-        let y = Math.floor(
-            parseInt(e.clientY - canvasy) / (canvas.height / height)
-        )
-
+        let [x, y] = getCoords(e)
         //If Visible
         if (board[x][y].Item2) {
             return
         }
+        if (board[x][y].Item3) {
+            flagCounter--
+        } else {
+            flagCounter++
+        }
+        $('#bombs').text(99 - flagCounter)
         connection.invoke('Flag', x, y)
     })
 
