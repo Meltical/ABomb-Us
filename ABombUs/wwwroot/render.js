@@ -66,13 +66,8 @@ const clearBoard = () => {
 }
 
 const updateBoard = (explodedMine, wrongMines) => {
-    let counter = 0
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
-            if (board[i][j].Item3) {
-                counter++
-            }
-
             if (board[i][j].Item2) {
                 ctx.font = '20px serif'
                 switch (board[i][j].Item1) {
@@ -114,7 +109,7 @@ const updateBoard = (explodedMine, wrongMines) => {
             }
         }
     }
-    $('#bombs').text(99 - counter)
+    $('#bombs').text(99 - board.filter((x) => x.some((y) => y.Item3)).length)
     if (explodedMine.length > 0) {
         for (let i = 0; i < explodedMine.length; i++) {
             drawSprite(96, 0, explodedMine[i].Item1, explodedMine[i].Item2)
