@@ -13,7 +13,7 @@ namespace ABombUs
         private const int Height = 15;
         private const int MineCount = 99;
         private static Random Random = new Random();
-        
+
         private static IEnumerable<(int Column, int Row)> AdjacentTiles(int column, int row)
         {
             //    A B C
@@ -73,7 +73,7 @@ namespace ABombUs
                 }
             }
         }
-        
+
         private static void Reveal(int column, int row)
         {
             Board[column, row].Visible = true;
@@ -88,7 +88,7 @@ namespace ABombUs
                 }
             }
         }
-        
+
         public static (List<(int x, int y)> ExplodedMines, List<(int x, int y)> WrongMines) Click(int column, int row)
         {
             if (!Board[column, row].Flagged)
@@ -119,31 +119,50 @@ namespace ABombUs
                         var clickResponse = Click(c, r);
                         if (State == BoardState.Lost)
                         {
-                            var explodedMines = new List<(int x, int y)>();
-                            var wrongMines = new List<(int x, int y)>();
-                            foreach (var (x, y) in adjacentTiles)
-                            {
-                                var cell = Board[x, y];
-                                if (cell.Value == Mine && !cell.Flagged)
-                                {
-                                    explodedMines.Add((x, y));
-                                }
-                                else if (cell.Value != Mine && cell.Flagged)
-                                {
-                                    wrongMines.Add((x, y));
-                                }
-                                else
-                                {
-                                    Board[x, y].Visible = true;
-                                }
-                            }
-                            return (explodedMines, wrongMines);
+
+                            return (GetExplodedMines(adjacentTiles), GetWrongMines());
                         }
                     }
                 }
             }
 
             return (null, null);
+        }
+
+        private static List<(int x, int y)> GetExplodedMines(IEnumerable<(int, int)> adjacentTiles)
+        {
+            var explodedMines = new List<(int x, int y)>();
+            var wrongMines = new List<(int x, int y)>();
+            foreach (var (x, y) in adjacentTiles)
+            {
+                var cell = Board[x, y];
+                if (cell.Value == Mine && !cell.Flagged)
+                {
+                    explodedMines.Add((x, y));
+                }
+                else
+                {
+                    Board[x, y].Visible = true;
+                }
+            }
+            return explodedMines;
+        }
+
+        private static List<(int x, int y)> GetWrongMines()
+        {
+            var wrongMines = new List<(int x, int y)>();
+            for (int c = 0; c < Width; c++)
+            {
+                for (int r = 0; r < Height; r++)
+                {
+                    if (Board[c, r].Value == Mine && !Board[c, r].Flagged)
+                    {
+                        wrongMines.Add((c, r));
+                    }
+                }
+            }
+
+            return wrongMines;
         }
 
         private static (List<(int x, int y)> ExplodedMines, List<(int x, int y)> WrongMines) HandleClick(int column, int row)

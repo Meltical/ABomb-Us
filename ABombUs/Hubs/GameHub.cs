@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 
 namespace ABombUs.Hubs
 {
-    public class GameHub : Hub 
+    public class GameHub : Hub
     {
         public Task MouseMove(int x, int y)
         {
@@ -31,7 +32,7 @@ namespace ABombUs.Hubs
 
         public Task Click(int c, int r)
         {
-            if(Game.State != BoardState.Playing)
+            if (Game.State != BoardState.Playing)
             {
                 return Task.CompletedTask;
             }
@@ -56,7 +57,7 @@ namespace ABombUs.Hubs
             }
         }
 
-        private Task BroadcastBoard(List<(int x, int y)> explodedMines = null, List<(int x, int y)> wrongMines = null) 
+        private Task BroadcastBoard(List<(int x, int y)> explodedMines = null, List<(int x, int y)> wrongMines = null)
         {
             return Clients.All.SendAsync("updateBoard", JsonConvert.SerializeObject(new BoardDto
             {
@@ -76,6 +77,12 @@ namespace ABombUs.Hubs
                 ExplodedMines = explodedMines,
                 WrongMines = wrongMines,
             }));
+        }
+
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            Clients.Others.SendAsync("disconnect", Context.ConnectionId);
+            return base.OnDisconnectedAsync(exception);
         }
     }
 }

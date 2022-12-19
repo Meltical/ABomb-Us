@@ -2,11 +2,14 @@ V0.1: (Demineur Multijoueur)
 
 V1:
 
-[x] Mouse Down case vide (Chord) :white_check_mark:
-[ ] Souris Visible (avec Couleurs)
-[ ] Hover sur les souris
-[x] Fix Resize window causing misplaced clicks :white_check_mark:
+Front
+[x] Mouse Down case vide (Chord)
+[x] Fix Resize window causing misplaced clicks
 [ ] Compteur de bombes et de temps
+
+Back
+[x] Souris Visible
+[ ] Sélection de couleurs
 
 V2: (ABombUs)
 
@@ -15,7 +18,7 @@ V2: (ABombUs)
 
 Règles:
 
-- Compteur d'erreurs d'équipe (Une fois la limite atteinte => perdu)
-- Tableau scale avec le nombre de joueurs
+-   Compteur d'erreurs d'équipe (Une fois la limite atteinte => perdu)
+-   Tableau scale avec le nombre de joueurs
 
-- Nbr cases découvertes / Nbr drapeaux correctes / Nbr explosés
+-   Nbr cases découvertes / Nbr drapeaux correctes / Nbr explosés

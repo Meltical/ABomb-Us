@@ -8,10 +8,6 @@ const height = 15
 let canvas = document.getElementById('canvas')
 let ctx = canvas.getContext('2d')
 
-// Runs each time the DOM window resize event fires.
-// Resets the canvas dimensions to match window,
-// then draws the new borders accordingly.
-
 let canvasx = $(canvas).offset().left
 let canvasy = $(canvas).offset().top
 
@@ -102,7 +98,6 @@ function resizeCanvas() {
     canvas.height = canvas.width / 2
     updateBoard([], [])
 }
-
 initialize()
 
 const handleMouseDown = (e) => {
@@ -113,7 +108,6 @@ const handleMouseDown = (e) => {
     }
     if (board[x][y].Item2) {
         if (board.some((x) => x.some((y) => y.Item2))) {
-            //change sprite of all tiles non visible or flagged around the clicked tile to 16,0
             for (let i = x - 1; i <= x + 1; i++) {
                 for (let j = y - 1; j <= y + 1; j++) {
                     if (i < 0 || i >= width || j < 0 || j >= height) {
