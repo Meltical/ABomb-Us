@@ -45,12 +45,16 @@ $(document).ready(function () {
     })
     $(canvas)
         .mousedown(function (e) {
-            console.log(e)
-            handleMouseDown(e)
-            $(this).mousemove(function (e) {
-                updateBoard([], [])
+            if ('buttons' in e) {
+                if (e.buttons != 1) {
+                    return
+                }
                 handleMouseDown(e)
-            })
+                $(this).mousemove(function (e) {
+                    updateBoard([], [])
+                    handleMouseDown(e)
+                })
+            }
         })
         .mouseup(function () {
             $(this).unbind('mousemove')
