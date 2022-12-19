@@ -87,10 +87,6 @@ const updateBoard = (explodedMine) => {
         }
     }
     if (explodedMine.length > 0) {
-        console.log(explodedMine)
-        let audio = new Audio('./vine-boom.mp3')
-        audio.volume = 1
-        audio.play()
         for (let i = 0; i < explodedMine.length; i++) {
             drawSprite(96, 0, explodedMine[i].Item1, explodedMine[i].Item2)
         }
@@ -104,7 +100,6 @@ function initialize() {
 function resizeCanvas() {
     canvas.width = Math.min(window.innerWidth, 1244)
     canvas.height = canvas.width / 2
-    console.log(canvas.width, canvas.height)
     updateBoard([], [])
 }
 
