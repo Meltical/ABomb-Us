@@ -155,7 +155,7 @@ namespace ABombUs
             {
                 for (int r = 0; r < Height; r++)
                 {
-                    if (Board[c, r].Value == Mine && !Board[c, r].Flagged)
+                    if (Board[c, r].Value == Mine && Board[c, r].Flagged)
                     {
                         wrongMines.Add((c, r));
                     }
@@ -180,7 +180,7 @@ namespace ABombUs
                     }
                 }
                 State = BoardState.Lost;
-                return (new List<(int x, int y)>() { (column, row) }, null);
+                return (new List<(int x, int y)>() { (column, row) }, GetWrongMines());
             }
             else if (Board[column, row].Value == 0)
             {
