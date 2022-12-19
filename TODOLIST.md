@@ -5,7 +5,7 @@ V1:
 Front
 [x] Mouse Down case vide (Chord)
 [x] Fix Resize window causing misplaced clicks
-[ ] Compteur de bombes et de temps
+[x] Compteur de bombes et de temps
 
 Back
 [x] Souris Visible

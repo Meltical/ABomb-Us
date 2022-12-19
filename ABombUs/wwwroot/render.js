@@ -10,7 +10,34 @@ let ctx = canvas.getContext('2d')
 
 let canvasx = $(canvas).offset().left
 let canvasy = $(canvas).offset().top
+let intervalIds = []
+const startClock = () => {
+    setIntervalId = setInterval(showTime, 1000)
+    intervalIds.push(setIntervalId)
+    let hour = 0
+    let min = 0
+    let sec = 0
+    function showTime() {
+        sec++
+        if (sec == 60) {
+            sec = 0
+            min++
+        }
+        if (min == 60) {
+            min = 0
+            hour++
+        }
+        if (hour < 10) hour = '0' + parseInt(hour)
+        if (min < 10) min = '0' + parseInt(min)
+        if (sec < 10) sec = '0' + sec
 
+        let currentTime = hour + ':' + min + ':' + sec
+        document.getElementById('clock').innerHTML = currentTime
+    }
+}
+const clearIntervalIds = () => {
+    intervalIds.forEach((intervalId) => clearInterval(intervalId))
+}
 const drawSprite = (dx, dy, i, j) =>
     ctx.drawImage(
         spriteimage,
@@ -38,7 +65,7 @@ const clearBoard = () => {
     drawBoard()
 }
 
-const updateBoard = (explodedMine) => {
+const updateBoard = (explodedMine, wrongMines) => {
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
             if (board[i][j].Item2) {
@@ -85,6 +112,11 @@ const updateBoard = (explodedMine) => {
     if (explodedMine.length > 0) {
         for (let i = 0; i < explodedMine.length; i++) {
             drawSprite(96, 0, explodedMine[i].Item1, explodedMine[i].Item2)
+        }
+    }
+    if (wrongMines.length > 0) {
+        for (let i = 0; i < wrongMines.length; i++) {
+            drawSprite(112, 0, wrongMines[i].Item1, wrongMines[i].Item2)
         }
     }
 }
