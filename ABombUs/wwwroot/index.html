@@ -32,7 +32,6 @@
                 d="M0 55.2V426c0 12.2 9.9 22 22 22c6.3 0 12.4-2.7 16.6-7.5L121.2 346l58.1 116.3c7.9 15.8 27.1 22.2 42.9 14.3s22.2-27.1 14.3-42.9L179.8 320H297.9c12.2 0 22.1-9.9 22.1-22.1c0-6.3-2.7-12.3-7.4-16.5L38.6 37.9C34.3 34.1 28.9 32 23.2 32C10.4 32 0 42.4 0 55.2z"
             />
         </svg>
-        <button onauxclick="mute()" id="new-game-button">New Game</button>
         <div style="display: flex; flex-direction: row">
             <canvas oncontextmenu="return false;" id="canvas"></canvas>
             <div id="menu" style="display: flex; flex-direction: column">
@@ -58,63 +57,58 @@
     </body>
 </html>
 <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        }
-    <<<<<<< HEAD
-        #canvas {
-            max-width: 1244px;
-        }
-        #mouse-dummy {
-            position: absolute;
-            z-index: 100;
-    =======
-        #menu {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 200px;
-            height: 100%;
-        }
-        canvas {
-            max-width: 1244px;
-        }
-        #bombs {
-            font-size: 7em;
-            margin: 0;
-        }
-        #overlay-content {
-            margin: 15%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        #overlay-text {
-            font-size: 4em;
-            margin: 0;
-        }
-        #overlay-title {
-            font-size: 6em;
-            margin: 0;
-        }
-        #overlay {
-            color: white;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 3;
-            display: none;
-            justify-content: center;
-    >>>>>>> e555621bacb6c1d63d8898235833019fd40c93e0
-        }
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+    #canvas {
+        max-width: 1244px;
+    }
+    #mouse-dummy {
+        position: absolute;
+        z-index: 100;
+    }
+    #menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 200px;
+        height: 100%;
+    }
+    #bombs {
+        font-size: 7em;
+        margin: 0;
+    }
+    #overlay-content {
+        margin: 15%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #overlay-text {
+        font-size: 4em;
+        margin: 0;
+    }
+    #overlay-title {
+        font-size: 6em;
+        margin: 0;
+    }
+    #overlay {
+        color: white;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 3;
+        display: none;
+        justify-content: center;
+    }
 </style>

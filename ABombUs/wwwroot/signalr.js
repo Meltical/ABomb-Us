@@ -1,23 +1,4 @@
 updateBoardFromServer = (response) => {
-let connection = new signalR.HubConnectionBuilder().withUrl('/gamehub').build()
-connection.start()
-
-document.getElementById('new-game-button').addEventListener('click', () => {
-    clearIntervalIds()
-    startClock()
-    document.getElementById('bombs').innerHTML = '99'
-    connection.invoke('NewGame')
-})
-
-document.getElementById('overlay-button').addEventListener('click', () => {
-    clearIntervalIds()
-    startClock()
-    document.getElementById('bombs').innerHTML = '99'
-    document.getElementById('overlay').style.display = 'none'
-    document.getElementById('overlay-text').innerHTML = ''
-    connection.invoke('NewGame')
-})
-connection.on('updateBoard', function (response) {
     let data = JSON.parse(response)
     board = data.board
     let state = data.state // Playing, Won, Lost
@@ -44,6 +25,22 @@ connection.on('updateBoard', function (response) {
 let connection = new signalR.HubConnectionBuilder().withUrl('/gamehub').build()
 connection.start().then(function () {
     updateBoardFromServer(connection.invoke('GetBoard'))
+})
+
+const startGame = () => {
+    clearIntervalIds()
+    startClock()
+    document.getElementById('bombs').innerHTML = '99'
+    document.getElementById('overlay').style.display = 'none'
+    document.getElementById('overlay-text').innerHTML = ''
+    connection.invoke('NewGame')
+}
+
+document.getElementById('new-game-button').addEventListener('click', () => {
+    startGame()
+})
+document.getElementById('overlay-button').addEventListener('click', () => {
+    startGame()
 })
 
 connection.on('updateBoard', function (response) {
