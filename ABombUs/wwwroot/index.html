@@ -24,7 +24,13 @@
             <canvas oncontextmenu="return false;" id="canvas"></canvas>
             <div id="menu" style="display: flex; flex-direction: column">
                 <div id="bombs">99</div>
-                <button onauxclick="mute()" id="new-game-button">
+                <div id="clock">00:00:00</div>
+
+                <script></script>
+                <button
+                    onauxclick="clearInterval(setIntervalId)"
+                    id="new-game-button"
+                >
                     New Game
                 </button>
             </div>

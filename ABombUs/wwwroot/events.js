@@ -26,19 +26,19 @@ $(document).ready(function () {
             audio.play()
         }
     })
-    let flagCounter = 0
     $(canvas).on('contextmenu', function (e) {
+        let bombsDefault = parseInt(document.getElementById('bombs').innerHTML)
         let [x, y] = getCoords(e)
         //If Visible
         if (board[x][y].Item2) {
             return
         }
         if (board[x][y].Item3) {
-            flagCounter--
+            bombsDefault++
         } else {
-            flagCounter++
+            bombsDefault--
         }
-        $('#bombs').text(99 - flagCounter)
+        $('#bombs').text(bombsDefault)
         connection.invoke('Flag', x, y)
     })
 
