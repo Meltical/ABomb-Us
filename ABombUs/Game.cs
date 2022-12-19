@@ -155,7 +155,7 @@ namespace ABombUs
             {
                 for (int r = 0; r < Height; r++)
                 {
-                    if (Board[c, r].Value == Mine && Board[c, r].Flagged)
+                    if (Board[c, r].Value != Mine && Board[c, r].Flagged)
                     {
                         wrongMines.Add((c, r));
                     }

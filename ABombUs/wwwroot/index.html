@@ -19,7 +19,7 @@
         <title>ABomb Us</title>
     </head>
 
-    <body>
+    <body oncontextmenu="return false;">
         <svg
             display="none"
             id="mouse-dummy"
@@ -33,7 +33,7 @@
             />
         </svg>
         <div style="display: flex; flex-direction: row">
-            <canvas oncontextmenu="return false;" id="canvas"></canvas>
+            <canvas id="canvas"></canvas>
             <div id="menu" style="display: flex; flex-direction: column">
                 <div id="bombs">99</div>
                 <div id="clock">00:00:00</div>
