@@ -25,17 +25,10 @@ $(document).ready(function () {
         }
     })
     $(canvas).on('contextmenu', function (e) {
-        let bombsDefault = parseInt(document.getElementById('bombs').innerHTML)
         let [x, y] = getCoords(e)
         if (board[x][y].Item2) {
             return
         }
-        if (board[x][y].Item3) {
-            bombsDefault++
-        } else {
-            bombsDefault--
-        }
-        $('#bombs').text(bombsDefault)
         connection.invoke('Flag', x, y)
     })
 
