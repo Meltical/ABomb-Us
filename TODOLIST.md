@@ -6,7 +6,7 @@ V1:
 [ ] Souris Visible (avec Couleurs)
 [ ] Hover sur les souris
 [x] Fix Resize window causing misplaced clicks :white_check_mark:
-[ ] Compteur de bombes et de temps
+[x] Compteur de bombes et de temps
 
 V2: (ABombUs)
 
@@ -15,7 +15,7 @@ V2: (ABombUs)
 
 Règles:
 
-- Compteur d'erreurs d'équipe (Une fois la limite atteinte => perdu)
-- Tableau scale avec le nombre de joueurs
+-   Compteur d'erreurs d'équipe (Une fois la limite atteinte => perdu)
+-   Tableau scale avec le nombre de joueurs
 
-- Nbr cases découvertes / Nbr drapeaux correctes / Nbr explosés
+-   Nbr cases découvertes / Nbr drapeaux correctes / Nbr explosés
