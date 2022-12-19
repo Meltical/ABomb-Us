@@ -32,7 +32,7 @@ namespace ABombUs.Hubs
 
         public Task Click(int c, int r)
         {
-            if (Game.State != BoardState.Playing)
+            if (Game.State == BoardState.Lost || Game.State == BoardState.Won)
             {
                 return Task.CompletedTask;
             }
@@ -43,7 +43,7 @@ namespace ABombUs.Hubs
 
         public Task Flag(int c, int r)
         {
-            if (Game.State != BoardState.Playing)
+            if (Game.State == BoardState.Lost || Game.State == BoardState.Won)
             {
                 return Task.CompletedTask;
             }

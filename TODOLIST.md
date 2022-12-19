@@ -5,9 +5,10 @@ V1:
 Front
 [x] Mouse Down case vide (Chord)
 [x] Fix Resize window causing misplaced clicks
-[x] Compteur de bombes 
+[x] Compteur de bombes
 [x] Souris Visible
 [ ] Fix Timer
+[ ] Fix StartGame
 [ ] Sélection couleur de souris
 
 V2: (ABombUs)

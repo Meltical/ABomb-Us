@@ -20,6 +20,7 @@ public class BoardDto
 [JsonConverter(typeof(StringEnumConverter))]
 public enum BoardState
 {
+    Empty,
     Playing,
     Lost,
     Won

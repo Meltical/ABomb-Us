@@ -12,13 +12,12 @@ $(document).ready(function () {
 
     $(canvas).on('click', function (e) {
         let [x, y] = getCoords(e)
-
-        if (board.some((x) => x.some((y) => y.Item2))) {
+        if (currentState == 'Playing') {
             if (board[x][y].Item3) {
                 return
             }
             connection.invoke('Click', x, y)
-        } else {
+        } else if (currentState == 'Empty') {
             connection.invoke('StartGame', x, y)
             audio.loop = true
             audio.volume = 0.5

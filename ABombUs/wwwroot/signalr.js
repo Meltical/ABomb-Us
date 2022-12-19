@@ -1,24 +1,34 @@
+let currentState = ''
 updateBoardFromServer = (response) => {
     let data = JSON.parse(response)
     board = data.board
     let state = data.state // Playing, Won, Lost
     let explodedMines = data.exploded_mines
     let wrongMines = data.wrong_mines
-    if (state == 'Lost') {
+    if (currentState == 'Playing' && state == 'Lost') {
         clearIntervalIds()
         var audio = new Audio('./vine-boom.mp3')
         audio.volume = 0.3
         audio.play()
         document.getElementById('overlay').style.display = 'flex'
         document.getElementById('overlay-text').innerHTML = 'You Lost!'
-    }
-    if (state == 'Won') {
+    } else if (currentState == 'Playing' && state == 'Won') {
         clearIntervalIds()
         var audio = new Audio('./ファンファーレ.mp3')
         audio.play()
         document.getElementById('overlay').style.display = 'flex'
         document.getElementById('overlay-text').innerHTML = 'You Won!'
+    } else if (
+        (currentState == 'Won' || currentState == 'Lost') &&
+        state == 'Empty'
+    ) {
+        clearIntervalIds()
+        startClock()
+        document.getElementById('bombs').innerHTML = '99'
+        document.getElementById('overlay').style.display = 'none'
+        document.getElementById('overlay-text').innerHTML = ''
     }
+    currentState = state
     updateBoard(explodedMines, wrongMines)
 }
 
@@ -27,20 +37,11 @@ connection.start().then(function () {
     updateBoardFromServer(connection.invoke('GetBoard'))
 })
 
-const startGame = () => {
-    clearIntervalIds()
-    startClock()
-    document.getElementById('bombs').innerHTML = '99'
-    document.getElementById('overlay').style.display = 'none'
-    document.getElementById('overlay-text').innerHTML = ''
-    connection.invoke('NewGame')
-}
-
 document.getElementById('new-game-button').addEventListener('click', () => {
-    startGame()
+    connection.invoke('NewGame')
 })
 document.getElementById('overlay-button').addEventListener('click', () => {
-    startGame()
+    connection.invoke('NewGame')
 })
 
 connection.on('updateBoard', function (response) {

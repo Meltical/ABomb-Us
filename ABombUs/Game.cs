@@ -41,7 +41,7 @@ namespace ABombUs
         public static void SetEmptyBoard()
         {
             Board = new (int Value, bool Visible, bool Flagged)[Width, Height];
-            State = BoardState.Playing;
+            State = BoardState.Empty;
         }
 
         public static void GenerateBoard(int initialColumn, int initialRow)
@@ -208,6 +208,7 @@ namespace ABombUs
                 State = BoardState.Won;
             }
 
+            State = BoardState.Playing;
             return (null, null);
         }
 
