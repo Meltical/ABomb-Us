@@ -132,10 +132,13 @@ function initialize() {
     resizeCanvas()
 }
 function resizeCanvas() {
-    canvas.width = Math.min(window.innerWidth, 1244)
+    canvas.width = Math.min(window.innerWidth, 1400)
     canvas.height = canvas.width / 2
     canvasHover.width = canvas.width
     canvasHover.height = canvas.height
+    document.getElementById('offset').style.width = canvas.width + 'px'
+    document.getElementById('menu').style.width = canvas.width + 'px'
+    document.getElementById('offset').style.height = canvas.height + 'px'
     updateBoard([], [])
 }
 initialize()

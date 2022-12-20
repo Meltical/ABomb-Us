@@ -19,14 +19,18 @@ const updateBoardFromServer = (response) => {
         document.getElementById('overlay').style.display = 'flex'
         document.getElementById('overlay-text').innerHTML = 'You Won!'
     } else if (
-        (currentState == 'Won' || currentState == 'Lost') &&
+        (currentState == 'Won' ||
+            currentState == 'Lost' ||
+            currentState == 'Playing') &&
         state == 'Empty'
     ) {
         clearIntervalIds()
-        startClock()
         document.getElementById('bombs').innerHTML = '99'
         document.getElementById('overlay').style.display = 'none'
         document.getElementById('overlay-text').innerHTML = ''
+    } else if (currentState == 'Empty' && state == 'Playing') {
+        clearIntervalIds()
+        startClock()
     }
     currentState = state
     updateBoard(explodedMines, wrongMines)
