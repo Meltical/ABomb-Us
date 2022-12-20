@@ -33,7 +33,6 @@ $(document).ready(function () {
     })
 
     $(canvasHover).on('mousemove', function (e) {
-        console.log('Mouse move')
         connection.invoke('MouseMove', e.clientX, e.clientY)
         if (e.buttons == 1) {
             updateBoard([], [])

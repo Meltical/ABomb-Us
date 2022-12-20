@@ -7,13 +7,13 @@ const height = 15
 
 let canvas = document.getElementById('canvas')
 let ctx = canvas.getContext('2d')
-let canvasx = $('#canvas').offset().left
-let canvasy = $('#canvas').offset().top
+let canvasx = $(canvas).offset().left
+let canvasy = $(canvas).offset().top
 
 let canvasHover = document.getElementById('canvasHover')
 let ctxHover = canvasHover.getContext('2d')
-let canvasHoverx = $('#canvasHover').offset().left
-let canvasHovery = $('#canvasHover').offset().top
+let canvasHoverx = $(canvasHover).offset().left
+let canvasHovery = $(canvasHover).offset().top
 
 let intervalIds = []
 const startClock = () => {
@@ -165,21 +165,18 @@ const handleMouseDown = (e) => {
 }
 
 const drawRect = (x, y, color) => {
-    ctxHover.clearRect(0, 0, canvas.width, canvas.height)
-    console.log(canvasHover.width, canvasHover.height)
+    ctxHover.clearRect(0, 0, canvasHover.width, canvasHover.height)
     let c = Math.floor(parseInt(x - canvasHoverx) / (canvasHover.width / width))
     let r = Math.floor(
         parseInt(y - canvasHovery) / (canvasHover.height / height)
     )
-    console.log('bruh')
     ctxHover.fillStyle = color
     ctxHover.globalAlpha = 0.5
-    ctxHover.rect(
+    ctxHover.fillRect(
         (c * canvasHover.width) / width,
         (r * canvasHover.height) / height,
         canvasHover.width / width,
         canvasHover.height / height
     )
-    ctxHover.fill()
     ctxHover.globalAlpha = 1
 }

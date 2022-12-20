@@ -7,8 +7,8 @@ Front
 [x] Fix Resize window causing misplaced clicks
 [x] Compteur de bombes
 [x] Souris Visible
-[ ] Fix Timer
-[ ] Fix StartGame
+[x] Fix Timer
+[x] Fix StartGame
 [ ] Sélection couleur de souris
 
 V2: (ABombUs)

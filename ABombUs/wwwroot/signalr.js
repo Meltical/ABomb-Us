@@ -56,7 +56,6 @@ connection.on('mouseMove', function (id, x, y) {
     let mouse = document.getElementById(id)
     let color = 'red'
     drawRect(x, y, color)
-    console.log('tests')
     if (!mouse) {
         let mouseDummy = document.getElementById('mouse-dummy')
         mouse = mouseDummy.cloneNode(true)

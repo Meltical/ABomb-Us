@@ -32,14 +32,12 @@
                 d="M0 55.2V426c0 12.2 9.9 22 22 22c6.3 0 12.4-2.7 16.6-7.5L121.2 346l58.1 116.3c7.9 15.8 27.1 22.2 42.9 14.3s22.2-27.1 14.3-42.9L179.8 320H297.9c12.2 0 22.1-9.9 22.1-22.1c0-6.3-2.7-12.3-7.4-16.5L38.6 37.9C34.3 34.1 28.9 32 23.2 32C10.4 32 0 42.4 0 55.2z"
             />
         </svg>
-        <div style="display: flex; flex-direction: row">
+        <div id="main">
             <canvas id="canvas"></canvas>
             <canvas id="canvasHover"></canvas>
-            <div id="menu" style="display: flex; flex-direction: column">
+            <div id="menu">
                 <div id="bombs">99</div>
                 <div id="clock">00:00:00</div>
-
-                <script></script>
                 <button id="new-game-button">New Game</button>
             </div>
         </div>
@@ -53,10 +51,6 @@
     </body>
 </html>
 <style>
-    #canvasHover {
-        position: absolute;
-        z-index: 3;
-    }
     html,
     body {
         margin: 0;
@@ -64,12 +58,26 @@
         width: 100%;
         height: 100%;
     }
-    #canvas {
+    #main {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+    }
+    #canvas,
+    #canvasHover {
+        position: absolute;
         max-width: 1244px;
     }
     #mouse-dummy {
         position: absolute;
         z-index: 2;
+    }
+    #canvas {
+        z-index: 1;
+    }
+    #canvasHover {
+        z-index: 3;
     }
     #menu {
         display: flex;
