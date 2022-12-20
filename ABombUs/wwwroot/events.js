@@ -10,7 +10,7 @@ $(document).ready(function () {
         return [x, y]
     }
 
-    $(canvas).on('click', function (e) {
+    $(canvasHover).on('click', function (e) {
         let [x, y] = getCoords(e)
         if (currentState == 'Playing') {
             if (board[x][y].Item3) {
@@ -24,7 +24,7 @@ $(document).ready(function () {
             audio.play()
         }
     })
-    $(canvas).on('contextmenu', function (e) {
+    $(canvasHover).on('contextmenu', function (e) {
         let [x, y] = getCoords(e)
         if (board[x][y].Item2) {
             return
@@ -32,7 +32,8 @@ $(document).ready(function () {
         connection.invoke('Flag', x, y)
     })
 
-    $(canvas).on('mousemove', function (e) {
+    $(canvasHover).on('mousemove', function (e) {
+        console.log('Mouse move')
         connection.invoke('MouseMove', e.clientX, e.clientY)
         if (e.buttons == 1) {
             updateBoard([], [])
@@ -40,7 +41,7 @@ $(document).ready(function () {
         }
     })
 
-    $(canvas).on('mousedown', function (e) {
+    $(canvasHover).on('mousedown', function (e) {
         if (e.buttons == 1) {
             updateBoard([], [])
             handleMouseDown(e)

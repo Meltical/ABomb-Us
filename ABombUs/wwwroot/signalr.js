@@ -1,5 +1,5 @@
 let currentState = ''
-updateBoardFromServer = (response) => {
+const updateBoardFromServer = (response) => {
     let data = JSON.parse(response)
     board = data.board
     let state = data.state // Playing, Won, Lost
@@ -54,6 +54,9 @@ document.getElementById('new-game-button').addEventListener('click', () => {
 
 connection.on('mouseMove', function (id, x, y) {
     let mouse = document.getElementById(id)
+    let color = 'red'
+    drawRect(x, y, color)
+    console.log('tests')
     if (!mouse) {
         let mouseDummy = document.getElementById('mouse-dummy')
         mouse = mouseDummy.cloneNode(true)
@@ -64,7 +67,7 @@ connection.on('mouseMove', function (id, x, y) {
     }
     mouse.style.left = x + 'px'
     mouse.style.top = y + 'px'
-    mouse.children[0].style.fill = 'red'
+    mouse.children[0].style.fill = color
 })
 
 const mute = () => {

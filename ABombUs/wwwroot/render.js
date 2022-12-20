@@ -7,9 +7,14 @@ const height = 15
 
 let canvas = document.getElementById('canvas')
 let ctx = canvas.getContext('2d')
+let canvasx = $('#canvas').offset().left
+let canvasy = $('#canvas').offset().top
 
-let canvasx = $(canvas).offset().left
-let canvasy = $(canvas).offset().top
+let canvasHover = document.getElementById('canvasHover')
+let ctxHover = canvasHover.getContext('2d')
+let canvasHoverx = $('#canvasHover').offset().left
+let canvasHovery = $('#canvasHover').offset().top
+
 let intervalIds = []
 const startClock = () => {
     setIntervalId = setInterval(showTime, 1000)
@@ -129,6 +134,8 @@ function initialize() {
 function resizeCanvas() {
     canvas.width = Math.min(window.innerWidth, 1244)
     canvas.height = canvas.width / 2
+    canvasHover.width = canvas.width
+    canvasHover.height = canvas.height
     updateBoard([], [])
 }
 initialize()
@@ -155,4 +162,24 @@ const handleMouseDown = (e) => {
     } else {
         drawSprite(16, 0, x, y)
     }
+}
+
+const drawRect = (x, y, color) => {
+    ctxHover.clearRect(0, 0, canvas.width, canvas.height)
+    console.log(canvasHover.width, canvasHover.height)
+    let c = Math.floor(parseInt(x - canvasHoverx) / (canvasHover.width / width))
+    let r = Math.floor(
+        parseInt(y - canvasHovery) / (canvasHover.height / height)
+    )
+    console.log('bruh')
+    ctxHover.fillStyle = color
+    ctxHover.globalAlpha = 0.5
+    ctxHover.rect(
+        (c * canvasHover.width) / width,
+        (r * canvasHover.height) / height,
+        canvasHover.width / width,
+        canvasHover.height / height
+    )
+    ctxHover.fill()
+    ctxHover.globalAlpha = 1
 }

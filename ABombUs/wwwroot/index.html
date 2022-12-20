@@ -34,6 +34,7 @@
         </svg>
         <div style="display: flex; flex-direction: row">
             <canvas id="canvas"></canvas>
+            <canvas id="canvasHover"></canvas>
             <div id="menu" style="display: flex; flex-direction: column">
                 <div id="bombs">99</div>
                 <div id="clock">00:00:00</div>
@@ -52,6 +53,10 @@
     </body>
 </html>
 <style>
+    #canvasHover {
+        position: absolute;
+        z-index: 3;
+    }
     html,
     body {
         margin: 0;
@@ -64,7 +69,7 @@
     }
     #mouse-dummy {
         position: absolute;
-        z-index: 100;
+        z-index: 2;
     }
     #menu {
         display: flex;
