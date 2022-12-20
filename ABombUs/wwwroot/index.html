@@ -13,9 +13,21 @@
             integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
             crossorigin="anonymous"
         ></script>
-        <script src="./render.js" defer></script>
-        <script src="./events.js" defer></script>
-        <script src="./signalr.js" defer></script>
+        <script src="./src/globals.js" defer></script>
+
+        <script src="./src/canvasHelper.js" defer></script>
+        <script src="./src/canvasEvents.js" defer></script>
+        <script src="./src/boardRenderer.js" defer></script>
+
+        <script src="./src/mouseRenderer.js" defer></script>
+        <script src="./src/music.js" defer></script>
+
+        <script src="./src/overlayRenderer.js" defer></script>
+        <script src="./src/timer.js" defer></script>
+
+        <script src="./src/gameHelper.js" defer></script>
+        <script src="./src/signalrHelper.js" defer></script>
+        <script src="./src/signalr.js" defer></script>
         <title>ABomb Us</title>
     </head>
 
@@ -38,7 +50,7 @@
             <div id="offset"></div>
             <div id="menu">
                 <div id="bombs">99</div>
-                <div id="clock">00:00:00</div>
+                <div id="timer">00:00:00</div>
                 <button id="new-game-button">New Game</button>
             </div>
         </div>

@@ -81,7 +81,7 @@ namespace ABombUs
             {
                 foreach (var (c, r) in AdjacentTiles(column, row))
                 {
-                    if (!Board[c, r].Visible)
+                    if (!Board[c, r].Visible && !Board[c, r].Flagged)
                     {
                         Reveal(c, r);
                     }
@@ -91,20 +91,22 @@ namespace ABombUs
 
         public static (List<(int x, int y)> ExplodedMines, List<(int x, int y)> WrongMines) Click(int column, int row)
         {
+            (List<(int x, int y)> ExplodedMines, List<(int x, int y)> WrongMines) result = (null, null);
             if (!Board[column, row].Flagged)
             {
                 if (!Board[column, row].Visible)
                 {
-                    return HandleClick(column, row);
+                    result = HandleClick(column, row);
                 }
                 else
                 {
                     //TODO: Use SignalState to Ignore useless Chord replies
-                    return HandleChord(column, row);
+                    result = HandleChord(column, row);
                 }
             }
 
-            return (null, null);
+            AssertWin();
+            return result;
         }
 
         private static (List<(int x, int y)> ExplodedMines, List<(int x, int y)> WrongMines) HandleChord(int column, int row)
@@ -191,6 +193,14 @@ namespace ABombUs
                 Board[column, row].Visible = true;
             }
 
+
+
+            State = BoardState.Playing;
+            return (null, null);
+        }
+
+        private static void AssertWin()
+        {
             int visibleCount = 0;
             for (int c = 0; c < Width; c++)
             {
@@ -207,9 +217,6 @@ namespace ABombUs
             {
                 State = BoardState.Won;
             }
-
-            State = BoardState.Playing;
-            return (null, null);
         }
 
         public static SignalState Flag(int column, int row)
