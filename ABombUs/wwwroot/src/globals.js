@@ -4,8 +4,7 @@ const ctx = canvas.getContext('2d')
 const canvasx = $(canvas).offset().left
 const canvasy = $(canvas).offset().top
 
-const canvasHover = document.getElementById('canvasHover')
-const ctxHover = canvasHover.getContext('2d')
+const canvasEvent = document.getElementById('canvasEvent')
 
 let board = []
 const width = 30
