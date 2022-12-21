@@ -1,6 +1,4 @@
-const handleMouseMove = (id, c, r) => {
-    //TODO: get color from server
-    const color = 'red'
+const handleMouseMove = (id, c, r, color) => {
     drawMouseHover(id, c, r, color)
     drawMouseIcon(id, c, r, color)
 }
@@ -50,3 +48,8 @@ const drawMouseIcon = (id, c, r, color) => {
     mouse.style.top = y + 'px'
     mouse.children[0].style.fill = color
 }
+
+//use the <input> to change the color of the mouse
+$('#colorPicker').on('change', function () {
+    mouseColor = $(this).val()
+})

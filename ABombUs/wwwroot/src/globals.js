@@ -16,3 +16,5 @@ spriteimage = new Image()
 spriteimage.src = './assets/2000.png'
 
 let intervalId
+
+let mouseColor = '#ff0000'
