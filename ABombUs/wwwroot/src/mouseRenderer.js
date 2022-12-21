@@ -1,40 +1,19 @@
-const drawMouseIcon = (id, c, r) => {
-    let canvasOtherHover = document.getElementById('canvas-' + id)
-    let mouse
-    //TODO: Draw mouse as png on a separate canvas (the highest z-index canvas)
+const handleMouseMove = (id, c, r) => {
     //TODO: get color from server
     const color = 'red'
-    // Remove Color from parameters and use the color from the server
+    drawMouseHover(id, c, r, color)
+    drawMouseIcon(id, c, r, color)
+}
+
+const drawMouseHover = (id, c, r, color) => {
+    let canvasOtherHover = document.getElementById('canvas-' + id)
     if (!canvasOtherHover) {
-        //TODO: Draw each players' mouse hover effects on a separate canvas (between the board and the mouse canvas) (One canvas by player)
         let canvasOtherHover = document.createElement('canvas')
         canvasOtherHover.id = 'canvas-' + id
         canvasOtherHover.width = canvas.width
         canvasOtherHover.height = canvas.height
         canvasOtherHover.style.zIndex = 3
         document.body.appendChild(canvasOtherHover)
-
-        const mouseDummy = document.getElementById('mouse-dummy')
-        mouse = mouseDummy.cloneNode(true)
-        mouse.id = id
-        mouse.style.display = 'unset'
-        mouse.style.position = 'absolute'
-        mouse.style.zIndex = 4
-        document.body.appendChild(mouse)
-    }
-    drawMouseHover(id, c, r, color)
-    mouse = document.getElementById(id)
-    const x = 8 + (c * canvasHover.width) / width
-    const y = 8 + (r * canvasHover.height) / height
-    mouse.style.left = x + 'px'
-    mouse.style.top = y + 'px'
-    mouse.children[0].style.fill = color
-}
-
-const drawMouseHover = (id, c, r, color) => {
-    let canvasOtherHover = document.getElementById('canvas-' + id)
-    if (!canvasOtherHover) {
-        return
     }
     const ctxOtherHover = canvasOtherHover.getContext('2d')
     ctxOtherHover.clearRect(
@@ -52,4 +31,22 @@ const drawMouseHover = (id, c, r, color) => {
         canvasOtherHover.height / height
     )
     ctxOtherHover.globalAlpha = 1
+}
+
+const drawMouseIcon = (id, c, r, color) => {
+    let mouse = document.getElementById('mouse-' + id)
+    if (!mouse) {
+        const mouseDummy = document.getElementById('mouse-dummy')
+        mouse = mouseDummy.cloneNode(true)
+        mouse.id = 'mouse-' + id
+        mouse.style.display = 'unset'
+        mouse.style.position = 'absolute'
+        mouse.style.zIndex = 4
+        document.body.appendChild(mouse)
+    }
+    const x = ((c + 0.5) * canvas.width) / width
+    const y = ((r + 0.5) * canvas.height) / height
+    mouse.style.left = x + 'px'
+    mouse.style.top = y + 'px'
+    mouse.children[0].style.fill = color
 }

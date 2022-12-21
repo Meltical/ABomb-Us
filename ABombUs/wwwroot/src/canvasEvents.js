@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $(canvasMouse).on('click', function (e) {
+    $(canvasEvent).on('click', function (e) {
         const [x, y] = getCoordsFromEvent(e)
         if (currentState == 'Playing') {
             if (!board[x][y].Item3) {
@@ -10,14 +10,14 @@ $(document).ready(function () {
         }
     })
 
-    $(canvasMouse).on('contextmenu', function (e) {
+    $(canvasEvent).on('contextmenu', function (e) {
         const [x, y] = getCoordsFromEvent(e)
         if (!board[x][y].Item2) {
             connection.invoke('Flag', x, y)
         }
     })
 
-    $(canvasMouse).on('mousemove', function (e) {
+    $(canvasEvent).on('mousemove', function (e) {
         const [c, r] = getCoordsFromEvent(e)
         invokeMouseMove(c, r)
         if (e.buttons == 1) {
@@ -27,7 +27,7 @@ $(document).ready(function () {
         }
     })
 
-    $(canvasMouse).on('mousedown', function (e) {
+    $(canvasEvent).on('mousedown', function (e) {
         if (e.buttons == 1) {
             //TODO: Draw hover effects above the board canvas
             updateBoard([], [])

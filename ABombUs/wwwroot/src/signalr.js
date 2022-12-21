@@ -42,7 +42,7 @@ connection.on('disconnect', (id) => {
     document.getElementById(id)?.remove()
 })
 connection.on('updateBoard', (boardDto) => updateBoardFromServer(boardDto))
-connection.on('mouseMove', (id, x, y) => drawMouseIcon(id, x, y))
+connection.on('mouseMove', (id, x, y) => handleMouseMove(id, x, y))
 
 document
     .getElementById('new-game-button')
