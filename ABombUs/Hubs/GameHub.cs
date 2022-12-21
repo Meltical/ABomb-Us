@@ -8,9 +8,9 @@ namespace ABombUs.Hubs
 {
     public class GameHub : Hub
     {
-        public Task MouseMove(int x, int y)
+        public Task MouseMove(int x, int y, string color)
         {
-            return Clients.Others.SendAsync("mouseMove", Context.ConnectionId, x, y);
+            return Clients.Others.SendAsync("mouseMove", Context.ConnectionId, x, y, color);
         }
 
         public Task GetBoard()
