@@ -8,10 +8,10 @@ const updateTimer = (timerString) => $('#timer').text(timerString)
 
 function initializeOverlay() {
     const resizeCanvas = () => {
-        canvas.width = Math.min(window.innerWidth, 1400)
-        canvas.height = canvas.width / 2
-        canvasHover.width = canvas.width
-        canvasHover.height = canvas.height
+        document.querySelectorAll('canvas').forEach((canvas) => {
+            canvas.width = Math.min(window.innerWidth, 1080)
+            canvas.height = canvas.width / 2
+        })
         document.getElementById('offset').style.width = canvas.width + 'px'
         document.getElementById('offset').style.height = canvas.height + 'px'
         document.getElementById('menu').style.width = canvas.width + 'px'

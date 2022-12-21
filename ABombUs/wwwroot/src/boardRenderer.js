@@ -21,6 +21,7 @@ function drawEmptyBoard() {
 }
 
 const updateBoard = (explodedMine, wrongMines) => {
+    updateBombCount()
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
             if (board[i][j].Item2) {
@@ -72,7 +73,6 @@ const updateBoard = (explodedMine, wrongMines) => {
             drawSprite(112, 0, wrongMines[i].Item1, wrongMines[i].Item2)
         }
     }
-    updateBombCount()
 }
 
 const drawMouseDownEffect = (e) => {
