@@ -14,19 +14,19 @@ const drawMouseIcon = (id, c, r) => {
         canvasOtherHover.style.zIndex = 3
         document.body.appendChild(canvasOtherHover)
 
-        // const mouseDummy = document.getElementById('mouse-dummy')
-        // mouse = mouseDummy.cloneNode(true)
-        // mouse.id = id
-        // mouse.style.display = 'unset'
-        // mouse.style.position = 'absolute'
-        // mouse.style.zIndex = 4
-        // document.body.appendChild(mouse)
+        const mouseDummy = document.getElementById('mouse-dummy')
+        mouse = mouseDummy.cloneNode(true)
+        mouse.id = id
+        mouse.style.display = 'unset'
+        mouse.style.position = 'absolute'
+        mouse.style.zIndex = 4
+        document.body.appendChild(mouse)
     }
-    // const x = 16 + (c * canvasHover.width) / width
-    // const y = 16 + (r * canvasHover.height) / height
-    // mouse.style.left = x + 'px'
-    // mouse.style.top = y + 'px'
-    // mouse.children[0].style.fill = color
+    const x = 8 + (c * canvasHover.width) / width
+    const y = 8 + (r * canvasHover.height) / height
+    mouse.style.left = x + 'px'
+    mouse.style.top = y + 'px'
+    mouse.children[0].style.fill = color
 }
 
 const drawMouseHover = (id, c, r, color) => {
