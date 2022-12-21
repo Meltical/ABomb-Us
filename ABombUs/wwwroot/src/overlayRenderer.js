@@ -11,10 +11,14 @@ function initializeOverlay() {
         document.querySelectorAll('canvas').forEach((canvas) => {
             canvas.width = Math.min(window.innerWidth, 1080)
             canvas.height = canvas.width / 2
+            //tried to center the canvas but we must then move the eventlistener
+            // canvas.style.left = (window.innerWidth - canvas.width) / 2 + 'px'
         })
         document.getElementById('offset').style.width = canvas.width + 'px'
         document.getElementById('offset').style.height = canvas.height + 'px'
-        document.getElementById('menu').style.width = canvas.width + 'px'
+        let menu = document.getElementById('menu')
+        menu.style.width = canvas.width + 'px'
+        // menu.style.marginLeft = (window.innerWidth - canvas.width) / 2 + 'px'
         updateBoard([], [])
     }
 

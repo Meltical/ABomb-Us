@@ -1,10 +1,10 @@
 const drawMouseIcon = (id, c, r) => {
     let canvasOtherHover = document.getElementById('canvas-' + id)
+    let mouse
     //TODO: Draw mouse as png on a separate canvas (the highest z-index canvas)
     //TODO: get color from server
     const color = 'red'
     // Remove Color from parameters and use the color from the server
-    drawMouseHover(id, c, r, color)
     if (!canvasOtherHover) {
         //TODO: Draw each players' mouse hover effects on a separate canvas (between the board and the mouse canvas) (One canvas by player)
         let canvasOtherHover = document.createElement('canvas')
@@ -22,6 +22,8 @@ const drawMouseIcon = (id, c, r) => {
         mouse.style.zIndex = 4
         document.body.appendChild(mouse)
     }
+    drawMouseHover(id, c, r, color)
+    mouse = document.getElementById(id)
     const x = 8 + (c * canvasHover.width) / width
     const y = 8 + (r * canvasHover.height) / height
     mouse.style.left = x + 'px'

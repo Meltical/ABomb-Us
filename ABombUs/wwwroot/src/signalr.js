@@ -37,7 +37,10 @@ connection.start().then(() => {
 })
 
 //TODO: Refactor with png canvas
-connection.on('disconnect', (id) => document.getElementById(id)?.remove())
+connection.on('disconnect', (id) => {
+    document.getElementById('canvas-' + id)?.remove()
+    document.getElementById(id)?.remove()
+})
 connection.on('updateBoard', (boardDto) => updateBoardFromServer(boardDto))
 connection.on('mouseMove', (id, x, y) => drawMouseIcon(id, x, y))
 
